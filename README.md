@@ -7,9 +7,19 @@ Get analysis of HDFC bank account and credit card statement
 
 ### Usage
 
-1. `pip install https://github.com/vipul-sharma20/hdfc-analytics/releases/download/v0.1.0/hdfc_analytics-0.1.0-py3-none-any.whl` (check releases for latest whl releases)
+1. Install CLI
+```
+pip install https://github.com/vipul-sharma20/hdfc-analytics/releases/download/v0.1.0/hdfc_analytics-0.1.0-py3-none-any.whl
+```
+(check releases for latest whl releases)
+
 2. Prepare bank statement data. Check the configuration section below
-3. Run: `hdfc-analytics account --statement-csv=./configs/generated_statement.csv --categories-config=./configs/categories.toml --column-config=./configs/column_mapping.toml`. Look at [`configs/`][configs] directory for sample configs
+
+3. Run the CLI
+```
+hdfc-analytics account --statement-csv=./configs/generated_statement.csv --categories-config=./configs/categories.toml --column-config=./configs/column_mapping.toml
+```
+Look at [`configs/`][configs] directory for sample configs
 
 ### Configuration
 
@@ -26,3 +36,14 @@ Sample set of configurations can be found in [`configs/`][configs] directory.
    into.
 
 [configs]: https://github.com/vipul-sharma20/hdfc-analytics/tree/main/configs
+
+
+---
+
+> [!WARNING]
+> This is an open-source code. While there's no shady business happening in the
+> code, I strongly suggest to use this at your own discretion. I strongly
+> suggest all users to thoroughly vet and test the code before integration into
+> any project or use in a production environment. I offer the code as-is and
+> make no representations regarding its correctness, reliability, or safety
+
