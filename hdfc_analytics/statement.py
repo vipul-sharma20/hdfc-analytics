@@ -31,8 +31,8 @@ class StatementCategorizer:
         df["category"] = df[description_column].apply(self.categorize_transaction)
 
         # Store other transactions to analyze and add more keywords to categories.toml
-        with open("other_transactions.csv", "w") as fp:
-            other_transactions = df[df["category"] == "Other"]
-            fp.write(other_transactions.to_csv())
+        # with open("other_transactions.csv", "w") as fp:
+        #     other_transactions = df[df["category"] == "Other"]
+        #     fp.write(other_transactions.to_csv())
 
         return df
