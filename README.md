@@ -28,18 +28,16 @@ Look at [`configs/`][configs] directory for sample configs
 
 Sample set of configurations can be found in [`configs/`][configs] directory.
 
-1. **Statement**: HDFC provides bank statement in XLS format. Download and convert your
-   statement to the format as defined in the sample statement csv in [`configs/`][configs]
-   directory. You'll only need to remove a few rows at the top and at the
-   bottom of the generated statement. Clean and save it to a csv file.
+1. **Statement**: HDFC provides bank statement in XLS format. Download and
+   convert your statement to the format as defined in the
+   [sample statement][sample-statement]. You'll only need to remove a few rows
+   at the top and at the bottom of the generated statement. Clean and save it
+   to a csv file
 2. **Columns**: This configuration stores custom column names to be mapped for
-   the generated sheet columns.
+   the generated sheet columns. Sample config [here][sample-column].
 3. **Categories**: This configuration defines some list of strings under a
    category that the script tries to match and categorize each transactions
-   into.
-
-[configs]: https://github.com/vipul-sharma20/hdfc-analytics/tree/main/configs
-
+   into. Sample config [here][sample-categories].
 
 ---
 
@@ -50,3 +48,7 @@ Sample set of configurations can be found in [`configs/`][configs] directory.
 > any project or use in a production environment. I offer the code as-is and
 > make no representations regarding its correctness, reliability, or safety
 
+[configs]: https://github.com/vipul-sharma20/hdfc-analytics/tree/main/configs
+[sample-statement]: https://github.com/vipul-sharma20/hdfc-analytics/blob/main/configs/statement.csv
+[sample-column]: https://github.com/vipul-sharma20/hdfc-analytics/blob/main/configs/column_mapping.toml
+[sample-categories]: https://github.com/vipul-sharma20/hdfc-analytics/blob/main/configs/categories.toml
