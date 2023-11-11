@@ -1,0 +1,8 @@
+local/
+dist/
+poetry.lock
+
+*.pyc
+
+# virtual env
+.hdfc

@@ -1,0 +1,32 @@
+[Groceries]
+keywords = ["grocery", "grocer"]
+
+[Food]
+keywords = ["lunch", "dinner", "breakfast", "food", "starbucks", "mcdonalds"]
+
+[Investments]
+keywords = ["investment", "mutual fund", "stonk", "stock"]
+
+[CreditCard]
+keywords = ["credit card", "autopay"]
+
+[Rent]
+keywords = ["rent"]
+
+[Transportation]
+keywords = ["uber", "ola"]
+
+[Clothes]
+keywords = ["myntra"]
+
+[Subscriptions]
+keywords = ["subscription", "linkedin", "membership", "cloud storage"]
+
+[Health]
+keywords = ["diagnostic"]
+
+[Travel]
+keywords = ["cleartrip", "vistara", "makemytrip", "airline", "hotel"]
+
+[Shopping]
+keywords = ["amazon", "shopping"]
