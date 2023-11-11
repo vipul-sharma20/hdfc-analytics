@@ -5,6 +5,9 @@ Get analysis of HDFC bank account and credit card statement
 > [!NOTE]  
 > Currently only supports bank account statement parsing and analysis
 
+<p align="center"><img src="./screenshots/report.png"/></p>
+<div align="center">Expenses by Category</div></br>
+
 ### Usage
 
 1. Install CLI
