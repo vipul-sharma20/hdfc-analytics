@@ -1,7 +1,10 @@
+import traceback
+import json
 from typing import List
 
 import pandas as pd
 import toml
+import ollama
 
 
 class StatementCategorizer:
@@ -25,14 +28,29 @@ class StatementCategorizer:
         for category, content in self.categories.items():
             if any(keyword in description.lower() for keyword in content["keywords"]):
                 return category
-        return "Other"  # Default category if no keywords match
+        try:
+            response = ollama.chat(model="mistral", messages=[
+              {
+                "role": "user",
+                "content": f"tag the following transaction description to an expense category: '{description.lower()}'. Give a response in json with category",
+              },
+            ])
+            category_json = response["message"]["content"]
+            print(category_json)
+            category = json.loads(category_json)
+
+            return category["category"]
+        except Exception as e:
+            traceback.print_exc()
+            return "Other"  # Default category if no keywords match
+        return "Other"
 
     def categorize_dataframe(self, df: pd.DataFrame, description_column="description") -> pd.DataFrame:
         df["category"] = df[description_column].apply(self.categorize_transaction)
 
         # Store other transactions to analyze and add more keywords to categories.toml
-        # with open("other_transactions.csv", "w") as fp:
-        #     other_transactions = df[df["category"] == "Other"]
-        #     fp.write(other_transactions.to_csv())
+        with open("other_transactions.csv", "w") as fp:
+            other_transactions = df[df["category"] == "Other"]
+            fp.write(other_transactions.to_csv())
 
         return df
