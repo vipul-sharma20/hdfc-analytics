@@ -31,8 +31,7 @@ def main():
         categories_config = args["--categories-config"]
         column_config = args["--column-config"]
         llm_host = args["--llm-host"]
-        if args.get("--llm"):
-            llm = args["--llm"]
+        llm = args["--llm"]
 
         # Load the mappings
         column_mappings = load_column_mappings(column_config)
