@@ -3,7 +3,9 @@
 Get analysis of HDFC bank account and credit card statement
 
 > [!NOTE]  
-> Currently only supports bank account statement parsing and analysis
+> Currently only supports bank account statement parsing and analysis. See
+> [#1][credit-card-feature] for any updates on credit card statement analysis
+> feature.
 
 <p align="center"><img src="./screenshots/report.png"/></p>
 <div align="center">Expenses by Category</div></br>
@@ -79,3 +81,4 @@ Sample set of configurations can be found in [`configs/`][configs] directory.
 [sample-categories]: https://github.com/vipul-sharma20/hdfc-analytics/blob/main/configs/categories.toml
 [litellm]: https://github.com/BerriAI/litellm
 [configuration-doc]: https://github.com/vipul-sharma20/hdfc-analytics/tree/llm-tagging?tab=readme-ov-file#configuration
+[credit-card-feature]: https://github.com/vipul-sharma20/hdfc-analytics/issues/1
