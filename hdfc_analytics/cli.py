@@ -2,13 +2,14 @@
 hdfc-analytics: Analyze HDFC statements.
 
 Usage:
-  hdfc-analytics account --statement-csv=<statement-csv> --categories-config=<categories-config-toml> --column-config=<column-mapping-toml> --use-llm
+  hdfc-analytics account --statement-csv=<statement-csv> --categories-config=<categories-config-toml> --column-config=<column-mapping-toml> [--llm=<llm-name>] [--llm-host=<llm-host-url>]
 
 Options:
   --statement-csv=<sattement-csv>               Path to bank account / credit card statement csv.
   --categories-config=<categories-config-toml>  Path to file with categories configs.
   --column-config=<column-mapping-toml>         Path to file with column mapping configs.
-  --use-llm                                     Flag to enable LLMs to tag transaction
+  --llm=<llm-name>                              Flag to enable LLMs to tag transaction.
+  --llm-host=<llm-host-url>                     LLM host. Applicable for Ollama or Huggingface served models.
 """
 
 from typing import List
@@ -29,7 +30,9 @@ def main():
         statement_csv = args["--statement-csv"]
         categories_config = args["--categories-config"]
         column_config = args["--column-config"]
-        use_llm = True if args.get("--use-llm") else False
+        llm_host = args["--llm-host"]
+        if args.get("--llm"):
+            llm = args["--llm"]
 
         # Load the mappings
         column_mappings = load_column_mappings(column_config)
@@ -40,7 +43,7 @@ def main():
         # Apply the column mappings
         df = map_columns(df, column_mappings)
 
-        categorizer = StatementCategorizer(categories_config, use_llm)
+        categorizer = StatementCategorizer(categories_config, llm_host, llm)
 
         # Categorize the DataFrame
         categorized_df = categorizer.categorize_dataframe(df)
