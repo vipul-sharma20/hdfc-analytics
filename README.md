@@ -12,7 +12,7 @@ Get analysis of HDFC bank account and credit card statement
 
 1. Install CLI
 ```
-pip install https://github.com/vipul-sharma20/hdfc-analytics/releases/download/v0.1.0/hdfc_analytics-0.1.0-py3-none-any.whl
+pip install https://github.com/vipul-sharma20/hdfc-analytics/releases/download/v0.2.0/hdfc_analytics-0.2.0-py3-none-any.whl
 ```
 (check releases for latest whl releases)
 
