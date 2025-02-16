@@ -1,15 +1,16 @@
-import traceback
 import json
+import traceback
 from typing import List
 
 import pandas as pd
 import toml
-import ollama
+from litellm import completion
 
 
 class StatementCategorizer:
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str, use_llm: bool = False):
         self.config_path = config_path
+        self.use_llm = use_llm
         self.load_categories()
 
     def load_categories(self) -> None:
@@ -28,24 +29,38 @@ class StatementCategorizer:
         for category, content in self.categories.items():
             if any(keyword in description.lower() for keyword in content["keywords"]):
                 return category
-        try:
-            response = ollama.chat(model="mistral", messages=[
-              {
-                "role": "user",
-                "content": f"tag the following transaction description to an expense category: '{description.lower()}'. Give a response in json with category",
-              },
-            ])
-            category_json = response["message"]["content"]
-            print(category_json)
-            category = json.loads(category_json)
 
-            return category["category"]
-        except Exception as e:
-            traceback.print_exc()
-            return "Other"  # Default category if no keywords match
-        return "Other"
+        if self.use_llm:
+            try:
+                category_keys = ", ".join(self.categories.keys())
 
-    def categorize_dataframe(self, df: pd.DataFrame, description_column="description") -> pd.DataFrame:
+                instructions = (
+                    f"tag the following transaction description to an expense category: '{description.lower()}'. "
+                    f"Below are the categories that you should prefer and if non of them feel appropriate, tag it based on your own logic. \n {category_keys}. "
+                    f"\n Below are some examples of the categories that exist right now. \n {json.dumps(self.categories)}"
+                    f"\n Give a response in json with `category` as key. It should only be a json response. "
+                )
+                response = completion(
+                    model="ollama/llama3.2",
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": instructions,
+                        },
+                    ],
+                    api_base="http://localhost:11434",
+                )
+                category_json = json.loads(response.choices[0].message.content)
+
+                return category_json["category"]
+            except Exception:
+                return "Other"  # Default category if no keywords match
+
+        return "Other"  # Default category if no keywords match
+
+    def categorize_dataframe(
+        self, df: pd.DataFrame, description_column="description"
+    ) -> pd.DataFrame:
         df["category"] = df[description_column].apply(self.categorize_transaction)
 
         # Store other transactions to analyze and add more keywords to categories.toml

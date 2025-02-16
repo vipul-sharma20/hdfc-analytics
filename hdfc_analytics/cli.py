@@ -2,23 +2,24 @@
 hdfc-analytics: Analyze HDFC statements.
 
 Usage:
-  hdfc-analytics account --statement-csv=<statement-csv> --categories-config=<categories-config-toml> --column-config=<column-mapping-toml>
+  hdfc-analytics account --statement-csv=<statement-csv> --categories-config=<categories-config-toml> --column-config=<column-mapping-toml> --use-llm
 
 Options:
   --statement-csv=<sattement-csv>               Path to bank account / credit card statement csv.
   --categories-config=<categories-config-toml>  Path to file with categories configs.
   --column-config=<column-mapping-toml>         Path to file with column mapping configs.
+  --use-llm                                     Flag to enable LLMs to tag transaction
 """
-import io
+
 from typing import List
 
-import toml
 import pandas as pd
+import toml
 from docopt import docopt
 
+from hdfc_analytics import __version__
 from hdfc_analytics.plot import plot_df
 from hdfc_analytics.statement import StatementCategorizer
-from hdfc_analytics import __version__
 
 
 def main():
@@ -28,6 +29,7 @@ def main():
         statement_csv = args["--statement-csv"]
         categories_config = args["--categories-config"]
         column_config = args["--column-config"]
+        use_llm = True if args.get("--use-llm") else False
 
         # Load the mappings
         column_mappings = load_column_mappings(column_config)
@@ -38,7 +40,7 @@ def main():
         # Apply the column mappings
         df = map_columns(df, column_mappings)
 
-        categorizer = StatementCategorizer(categories_config)
+        categorizer = StatementCategorizer(categories_config, use_llm)
 
         # Categorize the DataFrame
         categorized_df = categorizer.categorize_dataframe(df)
@@ -59,4 +61,3 @@ def map_columns(df: pd.DataFrame, mappings: List[str]) -> pd.DataFrame:
     column_renames = {value: key for key, value in mappings.items()}
     df = df.rename(columns=column_renames)
     return df
-
