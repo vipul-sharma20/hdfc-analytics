@@ -2,11 +2,6 @@
 
 Get analysis of HDFC bank account and credit card statement
 
-> [!NOTE]  
-> Currently only supports bank account statement parsing and analysis. See
-> [#1][credit-card-feature] for any updates on credit card statement analysis
-> feature.
-
 <p align="center"><img src="./screenshots/report.png"/></p>
 <div align="center">Expenses by Category</div></br>
 
@@ -21,11 +16,21 @@ pip install https://github.com/vipul-sharma20/hdfc-analytics/releases/download/v
 2. Prepare bank statement data. Check the configuration section below
 
 3. Run the CLI
+
+**Account Statement Analysis**
 ```
 hdfc-analytics account --statement-csv=./configs/generated_statement.csv --categories-config=./configs/categories.toml --column-config=./configs/column_mapping.toml
 ```
+
+**Credit Card Statement Analysis**
+```
+hdfc-analytics cc --statement-dir=./path-to-cc-statements/ --categories=./config/categories.toml --column-config=./configs/column_mapping.toml --name="JOHN DOE" --password=JOHN1211
+```
+
 Look at [`configs/`][configs] directory for sample configs and 
 [more documentation][configuration-doc] later in the doc.
+
+
 
 #### LLM for tagging
 If you cannot manually build a categories config, you can use LLM to tag your
