@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hdfc-analytics"
-version = "0.2.0"
+version = "0.3.0"
 description = "HDFC statement analysis"
 authors = ["Vipul Sharma <vipul.sharma20@gmail.com>"]
 readme = "README.md"
@@ -12,6 +12,7 @@ toml = "^0.10.2"
 docopt = "^0.6.2"
 plotly = "^5.18.0"
 litellm = "^1.61.6"
+hdfc-cc-parser-rs = "^0.0.7"
 
 [tool.poetry.scripts]
 hdfc-analytics = "hdfc_analytics.cli:main"

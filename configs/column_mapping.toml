@@ -1,4 +1,4 @@
-[default]
+[account]
 date = "Date"
 description = "Narration"
 reference = "Chq./Ref.No."
@@ -6,3 +6,9 @@ value_date = "Value Dt"
 withdrawal_amount = "Withdrawal Amt."
 deposit_amount = "Deposit Amt."
 closing_balance = "Closing Balance"
+
+[cc]
+date="date"
+description="description"
+rp="rp"
+amount="amount"
