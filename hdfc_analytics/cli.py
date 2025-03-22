@@ -4,6 +4,7 @@ hdfc-analytics: Analyze HDFC statements.
 Usage:
   hdfc-analytics account --statement-csv=<statement-csv> --categories-config=<categories-config-toml> --column-config=<column-mapping-toml> [--llm=<llm-name>] [--llm-host=<llm-host-url>]
   hdfc-analytics cc --statement-dir=<statement-dir> --name=<name> --password=<password> --categories-config=<categories-config-toml> --column-config=<column-mapping-toml> [--llm=<llm-name>] [--llm-host=<llm-host-url>]
+  hdfc-analytics total --statement-csv=<statement-csv> --statement-dir=<statement-dir> --name=<name> --password=<password> --categories-config=<categories-config-toml> --column-config=<column-mapping-toml> [--llm=<llm-name>] [--llm-host=<llm-host-url>]
 
 Options:
   --statement-csv=<sattement-csv>               Path to bank account statement csv.
@@ -55,8 +56,36 @@ def main():
         categorized_df = categorizer.categorize_dataframe(df)
 
         plot_df(categorized_df)
+    if args["total"]:
+        # Load account transactions
+        account_statement_csv = args["--statement-csv"]
+        account_column_mappings = load_column_mappings(args["--column-config"])
+        account_df = pd.read_csv(account_statement_csv)
+        account_df = map_columns(account_df, account_column_mappings)
 
-    if args["cc"]:
+        # Load credit card transactions
+        statement_dir = args["--statement-dir"]
+        pdf_files = glob.glob(os.path.join(statement_dir, "*.PDF"))
+        cc_dfs = []
+        for pdf_file in pdf_files:
+            output = hdfc_cc_parser.parse_cc_statement(pdf_file, args["--name"], args["--password"])
+            df = pd.DataFrame([row.split(',') for row in output.split('\n') if row], columns=['date', 'description', 'rp', 'amount'])
+            cc_dfs.append(df)
+        combined_cc_df = pd.concat(cc_dfs, ignore_index=True)
+        cc_column_mappings = load_column_mappings(args["--column-config"], statement_type="cc")
+        combined_cc_df = map_columns(combined_cc_df, cc_column_mappings)
+
+        # Combine account and credit card DataFrames
+        combined_df = pd.concat([account_df, combined_cc_df], ignore_index=True)
+
+        # Categorize the combined DataFrame
+        categorizer = StatementCategorizer(args["--categories-config"], args["--llm-host"], args["--llm"])
+        categorized_df = categorizer.categorize_dataframe(combined_df)
+
+        # Plot the combined categorized DataFrame
+        plot_df(categorized_df, statement_type="total")
+
+    elif args["cc"]:
         statement_dir = args["--statement-dir"]
         categories_config = args["--categories-config"]
         column_config = args["--column-config"]
