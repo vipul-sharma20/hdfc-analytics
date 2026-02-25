@@ -72,11 +72,8 @@ class StatementCategorizer:
     def categorize_dataframe(
         self, df: pd.DataFrame, description_column="description"
     ) -> pd.DataFrame:
-        df["category"] = df[description_column].apply(self.categorize_transaction)
+        df = df[~df[description_column].str.contains('DUAL PYT', case=False, na=False)].copy()
 
-        # Store other transactions to analyze and add more keywords to categories.toml
-        with open("other_transactions.csv", "w") as fp:
-            other_transactions = df[df["category"] == "Other"]
-            fp.write(other_transactions.to_csv())
+        df["category"] = df[description_column].apply(self.categorize_transaction)
 
         return df

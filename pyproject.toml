@@ -12,7 +12,7 @@ toml = "^0.10.2"
 docopt = "^0.6.2"
 plotly = "^5.18.0"
 litellm = "^1.61.6"
-hdfc-cc-parser-rs = "^0.0.7"
+hdfc-cc-parser-rs = "^0.0.8"
 
 [tool.poetry.scripts]
 hdfc-analytics = "hdfc_analytics.cli:main"
